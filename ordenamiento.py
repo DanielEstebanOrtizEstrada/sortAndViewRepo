@@ -30,10 +30,35 @@ def selection_sort(lista):
         lista[i], lista[indice_minimo] = lista[indice_minimo], lista[i]
         yield {k: "#10B981" for k in range(i + 1)}
 
+
+def bogo_sort(lista):
+    # En tu código original creabas la lista ordenada a mano.
+    # Aquí, como la interfaz nos da la lista ya desordenada, la ordenamos para comparar.
+    ordenado = sorted(lista) 
+    
+    # 1. Tu primer mezclado inicial
+    for i in range(len(lista) - 1, 0, -1):
+        j = int(random.random() * (i + 1))
+        lista[i], lista[j] = lista[j], lista[i]
+        # En vez de print, le decimos a la interfaz: ¡Pinta estos dos de rojo y amarillo!
+        yield {i: "#EF4444", j: "#F59E0B"}
+
+    # 2. Tu bucle while exacto
+    while lista != ordenado:
+        for i in range(len(lista) - 1, 0, -1):
+            j = int(random.random() * (i + 1))
+            lista[i], lista[j] = lista[j], lista[i]
+            # De nuevo, en vez de print, le pasamos los colores
+            yield {i: "#EF4444", j: "#F59E0B"}
+            
+    # Al salir del while, la función termina y la interfaz pintará todo de verde sola.
+
+
 # Para añadir más algoritmos en el futuro, solo defines la función arriba
 # y la registras en este diccionario:
 ALGORITMOS = {
     "Selection Sort": selection_sort,
+    "Bogo Sort": bogo_sort,  
     # "Bubble Sort": bubble_sort,
     # "Quick Sort": quick_sort,
 }
@@ -71,7 +96,7 @@ class VisualizadorOrdenamiento(ctk.CTk):
         self.lbl_cantidad = ctk.CTkLabel(panel, text="Elementos: 50", width=95)
         self.lbl_cantidad.pack(side="left", padx=(20, 5))
         self.slider_cantidad = ctk.CTkSlider(
-            panel, from_=10, to=250, number_of_steps=240, width=140, command=self._actualizar_cantidad
+            panel, from_=2, to=250, number_of_steps=240, width=140, command=self._actualizar_cantidad
         )
         self.slider_cantidad.set(50)
         self.slider_cantidad.pack(side="left", padx=5)
